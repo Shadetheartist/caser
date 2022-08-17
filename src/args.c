@@ -1,8 +1,6 @@
 #include <stdio.h>
-#include <linux/limits.h>
 #include <stdlib.h>
 #include <argp.h>
-#include <stdbool.h>
 #include <string.h>
 #include "args.h"
 
