@@ -1,0 +1,15 @@
+.vscode
+aclocal.m4
+caser-*
+config.log
+config.status
+build-aux
+autom4te.cache
+pkg
+Makefile
+Makefile.in
+
+src/.deps
+src/caser-*
+src/Makefile
+src/Makefile.in
