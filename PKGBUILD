@@ -4,7 +4,7 @@
 # then please put 'unknown'.
 
 # Maintainer: Your Name <youremail@domain.com>
-pkgname=caser
+pkgname=caser-git
 pkgver=1.0.0
 pkgrel=1
 epoch=
@@ -24,18 +24,18 @@ backup=()
 options=()
 install=
 changelog=
-source=("$pkgname-$pkgver.tar.gz")
+source=("$pkgname-$pkgver.tar.gz::https://github.com/Shadetheartist/caser/releases/download/${pkgver}/caser-${pkgver}.tar.gz")
 noextract=()
-sha256sums=('c5892ba7714fbcffbe5986fb5528a08533d3e7ac9969697c3a3fc23adf8f2ed5')
+sha256sums=('SKIP')
 validpgpkeys=()
 
 build() {
-	cd "$pkgname-$pkgver"
+	cd "caser-$pkgver"
 	./configure --prefix=/usr
 	make
 }
 
 package() {
-	cd "$pkgname-$pkgver"
+	cd "caser-$pkgver"
 	make DESTDIR="$pkgdir/" install
 }
