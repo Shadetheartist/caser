@@ -6,13 +6,15 @@
 
 const char *argp_program_version = "caser 1.0.0";
 const char *argp_program_bug_address = "<b.derehemi@gmail.com>";
-char doc[] = "Converts file names to a standard casing scheme.";
-char args_doc[] = "[FILENAME]...";
+char doc[] = "Converts strings and file names to a standard naming convention scheme. Only works with the 'none' and 'snake' naming conventions.";
+char args_doc[] = "[STRING]...";
 struct argp_option options[] = {
-    {"snake", 's', 0, 0, "Rename to snake_case"},
-    {"camel", 'c', 0, 0, "Rename to camelCase"},
-    {"pascal", 'p', 0, 0, "Rename to PascalCase"},
-    {"title", 't', 0, 0, "Rename to Title Case"},
+    {"none", 'n', 0, 0, "Do not enforce a naming convention scheme."},
+    {"snake", 's', 0, 0, "Convert to snake_case."},
+    {"camel", 'c', 0, 0, "Convert to camelCase."},
+    {"pascal", 'p', 0, 0, "Convert to PascalCase."},
+    {"title", 't', 0, 0, "Convert to Title Case."},
+    {"file", 'f', 0, 0, "For each input string, an attempt will be made to rename a file in the current working dir."},
     {"casing", 'i', "l|u|p", 0, CASING_USAGE_INSTRUCTIONS},
     {0}
 };
@@ -20,8 +22,7 @@ struct argp_option options[] = {
 
 int getCasingOption(char *arg)
 {
-  int casingOption = tolower(*arg);
-  switch (casingOption)
+  switch (*arg)
   {
   case 'l':
     return TO_LOWER_CASE;
@@ -40,19 +41,27 @@ error_t parse_opt(int key, char *arg, struct argp_state *state)
   switch (key)
   {
   case 's':
-    arguments->mode = SNAKE_CASE_MODE;
+    arguments->scheme = SNAKE_CASE_SCHEME;
     break;
 
   case 'c':
-    arguments->mode = CAMEL_CASE_MODE;
+    arguments->scheme = CAMEL_CASE_SCHEME;
     break;
 
   case 'p':
-    arguments->mode = PASCAL_CASE_MODE;
+    arguments->scheme = PASCAL_CASE_SCHEME;
     break;
 
   case 't':
-    arguments->mode = TITLE_CASE_MODE;
+    arguments->scheme = TITLE_CASE_SCHEME;
+    break;
+
+  case 'n':
+    arguments->scheme = NO_SCHEME;
+    break;
+
+  case 'f':
+    arguments->renameFiles = true;
     break;
 
   case 'i':
@@ -82,7 +91,7 @@ error_t parse_opt(int key, char *arg, struct argp_state *state)
     return 0;
 
   case ARGP_KEY_NO_ARGS:
-    argp_usage(state);
+    return 0;
 
   default:
     return ARGP_ERR_UNKNOWN;

@@ -7,6 +7,7 @@
 #include <argp.h>
 #include <stdbool.h>
 #include <string.h>
+#include "engine.h"
 
 #define CASING_USAGE_INSTRUCTIONS "Lower case ('l'), upper case ('u') or preserve case ('p')."
 
@@ -18,23 +19,11 @@ extern struct argp_option options[];
 
 struct arguments
 {
-  enum
-  {
-    SNAKE_CASE_MODE,
-    CAMEL_CASE_MODE,
-    PASCAL_CASE_MODE,
-    TITLE_CASE_MODE,
-  } mode;
-
-  enum
-  {
-    PRESERVE_CASE,
-    TO_LOWER_CASE,
-    TO_UPPER_CASE,
-  } casing;
-
+  Scheme scheme;
+  LetterCase casing;
   char **paths;
   int numPaths;
+  bool renameFiles;
 };
 
 int getCasingOption(char *arg);

@@ -3,6 +3,24 @@
 
 #define MAX_TOKENS 1024
 
+typedef enum
+{
+  NO_SCHEME,
+  SNAKE_CASE_SCHEME,
+  CAMEL_CASE_SCHEME,
+  PASCAL_CASE_SCHEME,
+  TITLE_CASE_SCHEME
+} Scheme;
+
+typedef enum
+{
+  PRESERVE_CASE,
+  TO_LOWER_CASE,
+  TO_UPPER_CASE
+} LetterCase;
+
+char *convert(char *str, Scheme scheme, LetterCase letterCase);
+
 int tokenize(char *str, char **buffer);
 
 void toSnakeCase(char **tokens, int numTokens, char *stringBuffer);

@@ -615,10 +615,47 @@ PACKAGE_STRING='caser 1.0.0'
 PACKAGE_BUGREPORT='b.derehemi@gmail.com'
 PACKAGE_URL=''
 
+# Factoring default headers for most tests.
+ac_includes_default="\
+#include <stddef.h>
+#ifdef HAVE_STDIO_H
+# include <stdio.h>
+#endif
+#ifdef HAVE_STDLIB_H
+# include <stdlib.h>
+#endif
+#ifdef HAVE_STRING_H
+# include <string.h>
+#endif
+#ifdef HAVE_INTTYPES_H
+# include <inttypes.h>
+#endif
+#ifdef HAVE_STDINT_H
+# include <stdint.h>
+#endif
+#ifdef HAVE_STRINGS_H
+# include <strings.h>
+#endif
+#ifdef HAVE_SYS_TYPES_H
+# include <sys/types.h>
+#endif
+#ifdef HAVE_SYS_STAT_H
+# include <sys/stat.h>
+#endif
+#ifdef HAVE_UNISTD_H
+# include <unistd.h>
+#endif"
+
+ac_header_c_list=
 ac_subst_vars='am__EXEEXT_FALSE
 am__EXEEXT_TRUE
 LTLIBOBJS
 LIBOBJS
+PKG_CONFIG_LIBDIR
+PKG_CONFIG_PATH
+PKG_CONFIG
+CHECK_LIBS
+CHECK_CFLAGS
 am__fastdepCC_FALSE
 am__fastdepCC_TRUE
 CCDEPMODE
@@ -710,6 +747,7 @@ ac_user_opts='
 enable_option_checking
 enable_silent_rules
 enable_dependency_tracking
+with_check
 '
       ac_precious_vars='build_alias
 host_alias
@@ -718,7 +756,12 @@ CC
 CFLAGS
 LDFLAGS
 LIBS
-CPPFLAGS'
+CPPFLAGS
+PKG_CONFIG
+PKG_CONFIG_PATH
+PKG_CONFIG_LIBDIR
+CHECK_CFLAGS
+CHECK_LIBS'
 
 
 # Initialize some variables set by options.
@@ -1349,6 +1392,11 @@ Optional Features:
   --disable-dependency-tracking
                           speeds up one-time build
 
+Optional Packages:
+  --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
+  --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
+  --with-check=PATH       prefix where check is installed default=auto
+
 Some influential environment variables:
   CC          C compiler command
   CFLAGS      C compiler flags
@@ -1357,6 +1405,14 @@ Some influential environment variables:
   LIBS        libraries to pass to the linker, e.g. -l<library>
   CPPFLAGS    (Objective) C/C++ preprocessor flags, e.g. -I<include dir> if
               you have headers in a nonstandard directory <include dir>
+  PKG_CONFIG  path to pkg-config utility
+  PKG_CONFIG_PATH
+              directories to add to pkg-config's search path
+  PKG_CONFIG_LIBDIR
+              path overriding pkg-config's built-in search path
+  CHECK_CFLAGS
+              C compiler flags for CHECK, overriding pkg-config
+  CHECK_LIBS  linker flags for CHECK, overriding pkg-config
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -1477,6 +1533,86 @@ fi
   as_fn_set_status $ac_retval
 
 } # ac_fn_c_try_compile
+
+# ac_fn_c_check_header_compile LINENO HEADER VAR INCLUDES
+# -------------------------------------------------------
+# Tests whether HEADER exists and can be compiled using the include files in
+# INCLUDES, setting the cache variable VAR accordingly.
+ac_fn_c_check_header_compile ()
+{
+  as_lineno=${as_lineno-"$1"} as_lineno_stack=as_lineno_stack=$as_lineno_stack
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $2" >&5
+printf %s "checking for $2... " >&6; }
+if eval test \${$3+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+$4
+#include <$2>
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"
+then :
+  eval "$3=yes"
+else $as_nop
+  eval "$3=no"
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+fi
+eval ac_res=\$$3
+	       { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+printf "%s\n" "$ac_res" >&6; }
+  eval $as_lineno_stack; ${as_lineno_stack:+:} unset as_lineno
+
+} # ac_fn_c_check_header_compile
+
+# ac_fn_c_try_link LINENO
+# -----------------------
+# Try to link conftest.$ac_ext, and return whether this succeeded.
+ac_fn_c_try_link ()
+{
+  as_lineno=${as_lineno-"$1"} as_lineno_stack=as_lineno_stack=$as_lineno_stack
+  rm -f conftest.$ac_objext conftest.beam conftest$ac_exeext
+  if { { ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:${as_lineno-$LINENO}: $ac_try_echo\""
+printf "%s\n" "$ac_try_echo"; } >&5
+  (eval "$ac_link") 2>conftest.err
+  ac_status=$?
+  if test -s conftest.err; then
+    grep -v '^ *+' conftest.err >conftest.er1
+    cat conftest.er1 >&5
+    mv -f conftest.er1 conftest.err
+  fi
+  printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest$ac_exeext && {
+	 test "$cross_compiling" = yes ||
+	 test -x conftest$ac_exeext
+       }
+then :
+  ac_retval=0
+else $as_nop
+  printf "%s\n" "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_retval=1
+fi
+  # Delete the IPA/IPO (Inter Procedural Analysis/Optimization) information
+  # created by the PGI compiler (conftest_ipa8_conftest.oo), as it would
+  # interfere with the next link command; also delete a directory that is
+  # left behind by Apple's compiler.  We do this before executing the actions.
+  rm -rf conftest.dSYM conftest_ipa8_conftest.oo
+  eval $as_lineno_stack; ${as_lineno_stack:+:} unset as_lineno
+  as_fn_set_status $ac_retval
+
+} # ac_fn_c_try_link
 ac_configure_args_raw=
 for ac_arg
 do
@@ -2080,6 +2216,15 @@ main (int argc, char **argv)
 }
 "
 
+as_fn_append ac_header_c_list " stdio.h stdio_h HAVE_STDIO_H"
+as_fn_append ac_header_c_list " stdlib.h stdlib_h HAVE_STDLIB_H"
+as_fn_append ac_header_c_list " string.h string_h HAVE_STRING_H"
+as_fn_append ac_header_c_list " inttypes.h inttypes_h HAVE_INTTYPES_H"
+as_fn_append ac_header_c_list " stdint.h stdint_h HAVE_STDINT_H"
+as_fn_append ac_header_c_list " strings.h strings_h HAVE_STRINGS_H"
+as_fn_append ac_header_c_list " sys/stat.h sys_stat_h HAVE_SYS_STAT_H"
+as_fn_append ac_header_c_list " sys/types.h sys_types_h HAVE_SYS_TYPES_H"
+as_fn_append ac_header_c_list " unistd.h unistd_h HAVE_UNISTD_H"
 
 # Auxiliary files required by this configure script.
 ac_aux_files="compile missing install-sh"
@@ -4120,6 +4265,424 @@ fi
 
 ac_config_files="$ac_config_files Makefile src/Makefile tests/Makefile"
 
+
+
+ac_header= ac_cache=
+for ac_item in $ac_header_c_list
+do
+  if test $ac_cache; then
+    ac_fn_c_check_header_compile "$LINENO" $ac_header ac_cv_header_$ac_cache "$ac_includes_default"
+    if eval test \"x\$ac_cv_header_$ac_cache\" = xyes; then
+      printf "%s\n" "#define $ac_item 1" >> confdefs.h
+    fi
+    ac_header= ac_cache=
+  elif test $ac_header; then
+    ac_cache=$ac_item
+  else
+    ac_header=$ac_item
+  fi
+done
+
+
+
+
+
+
+
+
+if test $ac_cv_header_stdlib_h = yes && test $ac_cv_header_string_h = yes
+then :
+
+printf "%s\n" "#define STDC_HEADERS 1" >>confdefs.h
+
+fi
+
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: AM_PATH_CHECK() is deprecated" >&5
+printf "%s\n" "$as_me: WARNING: AM_PATH_CHECK() is deprecated" >&2;}
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: use PKG_CHECK_MODULES([CHECK], [check >= 0.9.4]) instead" >&5
+printf "%s\n" "$as_me: WARNING: use PKG_CHECK_MODULES([CHECK], [check >= 0.9.4]) instead" >&2;}
+
+# Check whether --with-check was given.
+if test ${with_check+y}
+then :
+  withval=$with_check;
+fi
+
+
+  min_check_version=0.8.2
+
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for check - version >= $min_check_version" >&5
+printf %s "checking for check - version >= $min_check_version... " >&6; }
+
+  if test x$with_check = xno; then
+    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: disabled" >&5
+printf "%s\n" "disabled" >&6; }
+    as_fn_error $? "disabling check is not supported" "$LINENO" 5
+  else
+    if test "x$with_check" != x; then
+      CHECK_CFLAGS="-I$with_check/include"
+      CHECK_LIBS="-L$with_check/lib -lcheck"
+    else
+      CHECK_CFLAGS=""
+      CHECK_LIBS="-lcheck"
+    fi
+
+    ac_save_CFLAGS="$CFLAGS"
+    ac_save_LIBS="$LIBS"
+
+    CFLAGS="$CFLAGS $CHECK_CFLAGS"
+    LIBS="$CHECK_LIBS $LIBS"
+
+    rm -f conf.check-test
+    cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+$ac_includes_default
+#include <check.h>
+
+int main ()
+{
+  int major, minor, micro;
+  char *tmp_version;
+
+  system ("touch conf.check-test");
+
+  /* HP/UX 9 (%@#!) writes to sscanf strings */
+  tmp_version = strdup("$min_check_version");
+  if (sscanf(tmp_version, "%d.%d.%d", &major, &minor, &micro) != 3) {
+     printf("%s, bad version string\n", "$min_check_version");
+     return 1;
+   }
+
+  if ((CHECK_MAJOR_VERSION != check_major_version) ||
+      (CHECK_MINOR_VERSION != check_minor_version) ||
+      (CHECK_MICRO_VERSION != check_micro_version))
+    {
+      printf("\n*** The check header file (version %d.%d.%d) does not match\n",
+	     CHECK_MAJOR_VERSION, CHECK_MINOR_VERSION, CHECK_MICRO_VERSION);
+      printf("*** the check library (version %d.%d.%d).\n",
+	     check_major_version, check_minor_version, check_micro_version);
+      return 1;
+    }
+
+  if ((check_major_version > major) ||
+      ((check_major_version == major) && (check_minor_version > minor)) ||
+      ((check_major_version == major) && (check_minor_version == minor) && (check_micro_version >= micro)))
+    {
+      return 0;
+    }
+  else
+    {
+      printf("\n*** An old version of check (%d.%d.%d) was found.\n",
+             check_major_version, check_minor_version, check_micro_version);
+      printf("*** You need a version of check being at least %d.%d.%d.\n", major, minor, micro);
+      printf("***\n");
+      printf("*** If you have already installed a sufficiently new version, this error\n");
+      printf("*** probably means that the wrong copy of the check library and header\n");
+      printf("*** file is being found. Rerun configure with the --with-check=PATH option\n");
+      printf("*** to specify the prefix where the correct version was installed.\n");
+    }
+
+  return 1;
+}
+
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"
+then :
+
+else $as_nop
+  no_check=yes
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+
+    CFLAGS="$ac_save_CFLAGS"
+    LIBS="$ac_save_LIBS"
+
+    if test "x$no_check" = x ; then
+      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+printf "%s\n" "yes" >&6; }
+      :
+    else
+      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+      if test -f conf.check-test ; then
+        :
+      else
+        echo "*** Could not run check test program, checking why..."
+        CFLAGS="$CFLAGS $CHECK_CFLAGS"
+        LIBS="$CHECK_LIBS $LIBS"
+        cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <check.h>
+
+int
+main (void)
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+   echo "*** The test program compiled, but did not run. This usually means"
+        echo "*** that the run-time linker is not finding check. You'll need to set your"
+        echo "*** LD_LIBRARY_PATH environment variable, or edit /etc/ld.so.conf to point"
+        echo "*** to the installed location  Also, make sure you have run ldconfig if that"
+        echo "*** is required on your system"
+	echo "***"
+        echo "*** If you have an old version installed, it is best to remove it, although"
+        echo "*** you may also be able to get things to work by modifying LD_LIBRARY_PATH"
+else $as_nop
+   echo "*** The test program failed to compile or link. See the file config.log for"
+        echo "*** the exact error that occured."
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+
+        CFLAGS="$ac_save_CFLAGS"
+        LIBS="$ac_save_LIBS"
+      fi
+
+      CHECK_CFLAGS=""
+      CHECK_LIBS=""
+
+      rm -f conf.check-test
+      as_fn_error $? "check not found" "$LINENO" 5
+    fi
+
+
+
+
+    rm -f conf.check-test
+
+  fi
+
+
+
+
+
+
+
+
+
+if test "x$ac_cv_env_PKG_CONFIG_set" != "xset"; then
+	if test -n "$ac_tool_prefix"; then
+  # Extract the first word of "${ac_tool_prefix}pkg-config", so it can be a program name with args.
+set dummy ${ac_tool_prefix}pkg-config; ac_word=$2
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+printf %s "checking for $ac_word... " >&6; }
+if test ${ac_cv_path_PKG_CONFIG+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  case $PKG_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PKG_CONFIG="$PKG_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  case $as_dir in #(((
+    '') as_dir=./ ;;
+    */) ;;
+    *) as_dir=$as_dir/ ;;
+  esac
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir$ac_word$ac_exec_ext"; then
+    ac_cv_path_PKG_CONFIG="$as_dir$ac_word$ac_exec_ext"
+    printf "%s\n" "$as_me:${as_lineno-$LINENO}: found $as_dir$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+PKG_CONFIG=$ac_cv_path_PKG_CONFIG
+if test -n "$PKG_CONFIG"; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $PKG_CONFIG" >&5
+printf "%s\n" "$PKG_CONFIG" >&6; }
+else
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+fi
+
+
+fi
+if test -z "$ac_cv_path_PKG_CONFIG"; then
+  ac_pt_PKG_CONFIG=$PKG_CONFIG
+  # Extract the first word of "pkg-config", so it can be a program name with args.
+set dummy pkg-config; ac_word=$2
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+printf %s "checking for $ac_word... " >&6; }
+if test ${ac_cv_path_ac_pt_PKG_CONFIG+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  case $ac_pt_PKG_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_ac_pt_PKG_CONFIG="$ac_pt_PKG_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  case $as_dir in #(((
+    '') as_dir=./ ;;
+    */) ;;
+    *) as_dir=$as_dir/ ;;
+  esac
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir$ac_word$ac_exec_ext"; then
+    ac_cv_path_ac_pt_PKG_CONFIG="$as_dir$ac_word$ac_exec_ext"
+    printf "%s\n" "$as_me:${as_lineno-$LINENO}: found $as_dir$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+ac_pt_PKG_CONFIG=$ac_cv_path_ac_pt_PKG_CONFIG
+if test -n "$ac_pt_PKG_CONFIG"; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_pt_PKG_CONFIG" >&5
+printf "%s\n" "$ac_pt_PKG_CONFIG" >&6; }
+else
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+fi
+
+  if test "x$ac_pt_PKG_CONFIG" = x; then
+    PKG_CONFIG=""
+  else
+    case $cross_compiling:$ac_tool_warned in
+yes:)
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: using cross tools not prefixed with host triplet" >&5
+printf "%s\n" "$as_me: WARNING: using cross tools not prefixed with host triplet" >&2;}
+ac_tool_warned=yes ;;
+esac
+    PKG_CONFIG=$ac_pt_PKG_CONFIG
+  fi
+else
+  PKG_CONFIG="$ac_cv_path_PKG_CONFIG"
+fi
+
+fi
+if test -n "$PKG_CONFIG"; then
+	_pkg_min_version=0.9.0
+	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking pkg-config is at least version $_pkg_min_version" >&5
+printf %s "checking pkg-config is at least version $_pkg_min_version... " >&6; }
+	if $PKG_CONFIG --atleast-pkgconfig-version $_pkg_min_version; then
+		{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+printf "%s\n" "yes" >&6; }
+	else
+		{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+		PKG_CONFIG=""
+	fi
+fi
+
+pkg_failed=no
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for CHECK" >&5
+printf %s "checking for CHECK... " >&6; }
+
+if test -n "$CHECK_CFLAGS"; then
+    pkg_cv_CHECK_CFLAGS="$CHECK_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"check >= 0.9.6\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "check >= 0.9.6") 2>&5
+  ac_status=$?
+  printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_CHECK_CFLAGS=`$PKG_CONFIG --cflags "check >= 0.9.6" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$CHECK_LIBS"; then
+    pkg_cv_CHECK_LIBS="$CHECK_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"check >= 0.9.6\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "check >= 0.9.6") 2>&5
+  ac_status=$?
+  printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_CHECK_LIBS=`$PKG_CONFIG --libs "check >= 0.9.6" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+   	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        CHECK_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "check >= 0.9.6" 2>&1`
+        else
+	        CHECK_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "check >= 0.9.6" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$CHECK_PKG_ERRORS" >&5
+
+	as_fn_error $? "Package requirements (check >= 0.9.6) were not met:
+
+$CHECK_PKG_ERRORS
+
+Consider adjusting the PKG_CONFIG_PATH environment variable if you
+installed software in a non-standard prefix.
+
+Alternatively, you may set the environment variables CHECK_CFLAGS
+and CHECK_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details." "$LINENO" 5
+elif test $pkg_failed = untried; then
+     	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+	{ { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+printf "%s\n" "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "The pkg-config script could not be found or is too old.  Make sure it
+is in your PATH or set the PKG_CONFIG environment variable to the full
+path to pkg-config.
+
+Alternatively, you may set the environment variables CHECK_CFLAGS
+and CHECK_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.
+
+To get pkg-config, see <http://pkg-config.freedesktop.org/>.
+See \`config.log' for more details" "$LINENO" 5; }
+else
+	CHECK_CFLAGS=$pkg_cv_CHECK_CFLAGS
+	CHECK_LIBS=$pkg_cv_CHECK_LIBS
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+printf "%s\n" "yes" >&6; }
+
+fi
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure

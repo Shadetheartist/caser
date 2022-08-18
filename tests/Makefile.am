@@ -1,5 +1,5 @@
-TESTS = check_money
-check_PROGRAMS = caser
-caser_SOURCES = test.c $(top_builddir)/src/money.h
-caser_CFLAGS = @CHECK_CFLAGS@
-caser_LDADD = $(top_builddir)/src/libmoney.la @CHECK_LIBS@
+TESTS = check_caser
+check_PROGRAMS = check_caser
+check_caser_SOURCES = test.c $(top_builddir)/src/engine.c
+check_caser_CFLAGS = @CHECK_CFLAGS@
+check_caser_LDADD = @CHECK_LIBS@
