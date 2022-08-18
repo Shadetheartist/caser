@@ -4,7 +4,7 @@
 #include <string.h>
 #include "args.h"
 
-const char *argp_program_version = "caser 1.0.0";
+const char *argp_program_version = "caser 1.0.1";
 const char *argp_program_bug_address = "<b.derehemi@gmail.com>";
 char doc[] = "Converts strings and file names to a standard naming convention scheme. Only works with the 'none' and 'snake' naming conventions.";
 char args_doc[] = "[STRING]...";

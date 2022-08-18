@@ -1,4 +1,4 @@
-AC_INIT([caser], [1.0.0], [b.derehemi@gmail.com])
+AC_INIT([caser], [1.0.1], [b.derehemi@gmail.com])
 
 AC_CONFIG_AUX_DIR([build-aux])
 
