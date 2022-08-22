@@ -6,8 +6,8 @@
 #include "engine.h"
 #include "args.h"
 
-extern const char *DELIMITERS;
-extern const char *FILE_MODE_DELIMITERS;
+extern const char * const DELIMITERS;
+extern const char * const FILE_MODE_DELIMITERS;
 
 void processArgs(struct arguments arguments);
 

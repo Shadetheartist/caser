@@ -5,9 +5,7 @@
 #include <linux/limits.h>
 #include "engine.h"
 
-#define MAX_TOKENS 1024
-
-char *convert(const char * const str, const Scheme scheme, const LetterCase letterCase, char * const delimiters)
+char *convert(const char * const str, const Scheme scheme, const LetterCase letterCase, const char * const delimiters)
 {
   const int tokenCount = countTokens(str, delimiters);
 
@@ -23,7 +21,7 @@ char *convert(const char * const str, const Scheme scheme, const LetterCase lett
 
   strcpy(stringBuffer, str);
 
-  if (scheme == NO_SCHEME || scheme == SNAKE_CASE_SCHEME)
+  if (scheme == NO_SCHEME || scheme == SNAKE_CASE_SCHEME || scheme == DASH_CASE_SCHEME)
   {
     switch (letterCase)
     {
@@ -134,12 +132,6 @@ int tokenize(const char *const str, char **buffer, const char * const delimiters
 
   while (ptr != NULL)
   {
-    if (tokenCounter >= MAX_TOKENS)
-    {
-      fprintf(stderr, "Error: Too many tokens in '%s'.", str);
-      exit(EXIT_FAILURE);
-    }
-
     buffer[tokenCounter] = malloc(sizeof(char) * (strlen(ptr) + 1));
 
     if (buffer[tokenCounter] == NULL)

@@ -20,7 +20,7 @@ typedef enum
   TO_UPPER_CASE
 } LetterCase;
 
-char *convert(const char * const str, const Scheme scheme, const LetterCase letterCase, char * const delimiters);
+char *convert(const char * const str, const Scheme scheme, const LetterCase letterCase, const char * const delimiters);
 
 int countTokens(const char * const str, const char * const delimiters);
 

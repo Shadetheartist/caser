@@ -4,8 +4,8 @@
 #include "engine.h"
 
 
-const char *DELIMITERS = " _.-";
-const char *FILE_MODE_DELIMITERS = " _-";
+const char * const DELIMITERS = " _.-";
+const char * const FILE_MODE_DELIMITERS = " _-";
 
 char *getLine(FILE *fp)
 {
@@ -21,7 +21,7 @@ char *getLine(FILE *fp)
 
   while (ch)
   {
-    ch = getc(stdin);
+    ch = fgetc(stdin);
 
     /* Check if we need to stop. */
     if (ch == EOF || ch == '\n')
