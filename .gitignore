@@ -1,6 +1,7 @@
 /.vscode
 /aclocal.m4
 /caser-*
+/caser
 /config.log
 /config.status
 /build-aux

@@ -11,10 +11,11 @@ char args_doc[] = "[STRING]...";
 struct argp_option options[] = {
     {"none", 'n', 0, 0, "Do not enforce a naming convention scheme."},
     {"snake", 's', 0, 0, "Convert to snake_case."},
+    {"dash", 'd', 0, 0, "Convert to dash-case."},
     {"camel", 'c', 0, 0, "Convert to camelCase."},
     {"pascal", 'p', 0, 0, "Convert to PascalCase."},
     {"title", 't', 0, 0, "Convert to Title Case."},
-    {"file", 'f', 0, 0, "For each input string, an attempt will be made to rename a file in the current working dir."},
+    {"file", 'f', 0, 0, "Allow dot '.' to remain in output strings."},
     {"casing", 'i', "l|u|p", 0, CASING_USAGE_INSTRUCTIONS},
     {0}
 };
@@ -60,10 +61,6 @@ error_t parse_opt(int key, char *arg, struct argp_state *state)
     arguments->scheme = NO_SCHEME;
     break;
 
-  case 'f':
-    arguments->renameFiles = true;
-    break;
-
   case 'i':
     int casingOption = getCasingOption(arg);
     if (casingOption == -1)
@@ -72,6 +69,10 @@ error_t parse_opt(int key, char *arg, struct argp_state *state)
     }
 
     arguments->casing = casingOption;
+    break;
+
+  case 'f': 
+    arguments->fileMode = true;
     break;
 
   case ARGP_KEY_ARG:

@@ -23,7 +23,7 @@ struct arguments
   LetterCase casing;
   char **paths;
   int numPaths;
-  bool renameFiles;
+  bool fileMode;
 };
 
 int getCasingOption(char *arg);

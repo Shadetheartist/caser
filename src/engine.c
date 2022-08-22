@@ -7,11 +7,11 @@
 
 #define MAX_TOKENS 1024
 
-const char *delimiters = " _";
-
-char *convert(char *str, Scheme scheme, LetterCase letterCase)
+char *convert(const char * const str, const Scheme scheme, const LetterCase letterCase, char * const delimiters)
 {
-  char *tokenBuffer[MAX_TOKENS] = {0};
+  const int tokenCount = countTokens(str, delimiters);
+
+  char **tokenBuffer = (char **)calloc(tokenCount, sizeof(char *));
 
   char *stringBuffer = (char *)calloc(strlen(str) + 1, sizeof(char));
 
@@ -44,7 +44,7 @@ char *convert(char *str, Scheme scheme, LetterCase letterCase)
     }
   }
 
-  int numTokens = tokenize(stringBuffer, tokenBuffer);
+  int numTokens = tokenize(stringBuffer, tokenBuffer, delimiters);
   char *returnString = (char *)calloc(strlen(stringBuffer) + 1, sizeof(char));
 
   if (returnString == NULL)
@@ -67,28 +67,56 @@ char *convert(char *str, Scheme scheme, LetterCase letterCase)
   case TITLE_CASE_SCHEME:
     toTitleCase(tokenBuffer, numTokens, returnString);
     break;
+  case DASH_CASE_SCHEME:
+    toDashCase(tokenBuffer, numTokens, returnString);
+    break;
   case NO_SCHEME:
     break;
   default:
-      exit(EXIT_FAILURE);
-      break;
+    exit(EXIT_FAILURE);
+    break;
   }
 
-  for (int j = 0; j < MAX_TOKENS; j++)
+  for (int j = 0; j < tokenCount; j++)
   {
-    if (tokenBuffer[j] == NULL)
-    {
-      break;
-    }
-
     free(tokenBuffer[j]);
     tokenBuffer[j] = NULL;
   }
 
+  free(tokenBuffer);
+  tokenBuffer = NULL;
+
   return returnString;
 }
 
-int tokenize(char *str, char **buffer)
+int countTokens(const char *const str, const char * const delimiters)
+{
+  int len = strlen(str);
+  char *tokenStr = (char *)malloc(sizeof(char) * (len + 1));
+
+  if (tokenStr == NULL)
+  {
+    fprintf(stderr, "Out of memory");
+    exit(EXIT_FAILURE);
+  }
+
+  strcpy(tokenStr, str);
+
+  int tokenCounter = 0;
+  char *ptr = strtok(tokenStr, delimiters);
+
+  while (ptr != NULL)
+  {
+    tokenCounter++;
+    ptr = strtok(NULL, delimiters);
+  }
+
+  free(tokenStr);
+
+  return tokenCounter;
+}
+
+int tokenize(const char *const str, char **buffer, const char * const delimiters)
 {
   int len = strlen(str);
   char *tokenStr = (char *)malloc(sizeof(char) * (len + 1));
@@ -144,6 +172,20 @@ void toSnakeCase(char **tokens, int numTokens, char *stringBuffer)
   }
 }
 
+
+void toDashCase(char **tokens, int numTokens, char *stringBuffer)
+{
+  for (int i = 0; i < numTokens; i++)
+  {
+    if (i > 0)
+    {
+      strcat(stringBuffer, "-");
+    }
+
+    strcat(stringBuffer, tokens[i]);
+  }
+}
+
 void toCamelCase(char **tokens, int numTokens, char *stringBuffer)
 {
 
@@ -192,7 +234,7 @@ void toTitleCase(char **tokens, int numTokens, char *stringBuffer)
   }
 }
 
-void toUpperStrInPlace(char *str)
+void toUpperStrInPlace(char * const str)
 {
   for (int i = 0; str[i]; i++)
   {
@@ -200,7 +242,7 @@ void toUpperStrInPlace(char *str)
   }
 }
 
-void toLowerStrInPlace(char *str)
+void toLowerStrInPlace(char * const str)
 {
   for (int i = 0; str[i]; i++)
   {
