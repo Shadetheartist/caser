@@ -9,7 +9,7 @@
 #include <string.h>
 #include "engine.h"
 
-#define CASING_USAGE_INSTRUCTIONS "Lower case ('l'), upper case ('u') or preserve case ('p')."
+#define CASING_USAGE_INSTRUCTIONS "Lower case ('l'), upper case ('u') or preserve case ('p').  Only works with the 'none', 'snake', and 'dash' naming conventions."
 
 struct arguments
 {

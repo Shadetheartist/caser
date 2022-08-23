@@ -1,4 +1,5 @@
-AC_INIT([caser], [1.0.2], [b.derehemi@gmail.com])
+# change the version number in args.c as well
+AC_INIT([caser], [1.0.3], [b.derehemi@gmail.com])
 
 AC_CONFIG_AUX_DIR([build-aux])
 

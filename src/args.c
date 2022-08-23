@@ -4,9 +4,9 @@
 #include <string.h>
 #include "args.h"
 
-const char *argp_program_version = "caser 1.0.2";
+const char *argp_program_version = "caser 1.0.3";
 const char *argp_program_bug_address = "<b.derehemi@gmail.com>";
-char doc[] = "Converts strings and file names to a standard naming convention scheme. Only works with the 'none' and 'snake' naming conventions.";
+char doc[] = "Converts strings and file names to a standard naming convention scheme.";
 char args_doc[] = "[STRING]...";
 struct argp_option options[] = {
     {"none", 'n', 0, 0, "Do not enforce a naming convention scheme."},
@@ -43,6 +43,10 @@ error_t parse_opt(int key, char *arg, struct argp_state *state)
   {
   case 's':
     arguments->scheme = SNAKE_CASE_SCHEME;
+    break;
+
+  case 'd':
+    arguments->scheme = DASH_CASE_SCHEME;
     break;
 
   case 'c':

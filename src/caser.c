@@ -3,7 +3,6 @@
 #include "caser.h"
 #include "engine.h"
 
-
 const char * const DELIMITERS = " _.-";
 const char * const FILE_MODE_DELIMITERS = " _-";
 
@@ -50,7 +49,7 @@ char *getLine(FILE *fp)
 
 void sendToOutput(struct arguments arguments, char *inputStr, char *converted)
 {
-  fwrite(converted, sizeof(char) * (strlen(converted) + 1), 1, stdout);
+  printf("%s\n", converted);
 }
 
 char *delimiterFromArgs(struct arguments arguments)
