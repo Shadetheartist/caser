@@ -16,7 +16,7 @@ struct conversionTestData
 };
 
 const struct conversionTestData testData[] = {
-    
+
     {
         "", // input
 
@@ -40,8 +40,8 @@ const struct conversionTestData testData[] = {
 
         "a_b", // snake
         "a-b", // dash
-        "aB", // camel
-        "AB", // pascal
+        "aB",  // camel
+        "AB",  // pascal
         "A B", // title
     },
     {
@@ -49,9 +49,18 @@ const struct conversionTestData testData[] = {
 
         "ab_cd", // snake
         "ab-cd", // dash
-        "abCd", // camel
-        "AbCd", // pascal
+        "abCd",  // camel
+        "AbCd",  // pascal
         "Ab Cd", // title
+    },
+    {   // program does not currently parse existing camelCased or other naming-schemed strings
+        "testCase", // input
+
+        "testcase", // snake
+        "testcase", // dash
+        "testcase",  // camel
+        "Testcase",  // pascal
+        "Testcase", // title
     },
     {
         "   CE3_Battery Compartment - Battery Compartment.gcode   ", // input
@@ -136,8 +145,21 @@ START_TEST(test_snake_file_case)
   LetterCase letterCase = TO_LOWER_CASE;
 
   ck_assert_str_eq(convert("a test file", scheme, letterCase, FILE_MODE_DELIMITERS), "a_test_file");
-  ck_assert_str_eq(convert("testFile.jpeg", scheme, letterCase, FILE_MODE_DELIMITERS), "test_file.jpeg");
+  ck_assert_str_eq(convert("testFile.jpeg", scheme, letterCase, FILE_MODE_DELIMITERS), "testfile.jpeg");
   ck_assert_str_eq(convert("my test File.tmp.jpeg", scheme, letterCase, FILE_MODE_DELIMITERS), "my_test_file.tmp.jpeg");
+}
+END_TEST
+
+// CASING TESTS
+START_TEST(test_casing)
+{
+  ck_assert_str_eq(convert("Test Case", SNAKE_CASE_SCHEME, TO_LOWER_CASE, DELIMITERS), "test_case");
+  ck_assert_str_eq(convert("Test Case", SNAKE_CASE_SCHEME, TO_UPPER_CASE, DELIMITERS), "TEST_CASE");
+  ck_assert_str_eq(convert("Test Case", SNAKE_CASE_SCHEME, PRESERVE_CASE, DELIMITERS), "Test_Case");
+
+  ck_assert_str_eq(convert("TeSt CaSe", NO_SCHEME, TO_LOWER_CASE, DELIMITERS), "test case");
+  ck_assert_str_eq(convert("TeSt CaSe", NO_SCHEME, TO_UPPER_CASE, DELIMITERS), "TEST CASE");
+  ck_assert_str_eq(convert("TeSt CaSe", NO_SCHEME, PRESERVE_CASE, DELIMITERS), "TeSt CaSe");
 }
 END_TEST
 
@@ -170,6 +192,10 @@ Suite *caser_suite(void)
   TCase *tc_file_snake = tcase_create("File (Snake)");
   tcase_add_test(tc_file_snake, test_snake_file_case);
   suite_add_tcase(s, tc_file_snake);
+
+  TCase *tc_casing = tcase_create("Casing");
+  tcase_add_test(tc_casing, test_casing);
+  suite_add_tcase(s, tc_casing);
 
   return s;
 }

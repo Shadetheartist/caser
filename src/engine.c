@@ -43,6 +43,7 @@ char *convert(const char * const str, const Scheme scheme, const LetterCase lett
   }
 
   int numTokens = tokenize(stringBuffer, tokenBuffer, delimiters);
+
   char *returnString = (char *)calloc(strlen(stringBuffer) + 1, sizeof(char));
 
   if (returnString == NULL)
@@ -69,6 +70,7 @@ char *convert(const char * const str, const Scheme scheme, const LetterCase lett
     toDashCase(tokenBuffer, numTokens, returnString);
     break;
   case NO_SCHEME:
+    strcpy(returnString, stringBuffer);
     break;
   default:
     exit(EXIT_FAILURE);
@@ -83,6 +85,9 @@ char *convert(const char * const str, const Scheme scheme, const LetterCase lett
 
   free(tokenBuffer);
   tokenBuffer = NULL;
+
+  free(stringBuffer);
+  stringBuffer = NULL;
 
   return returnString;
 }
