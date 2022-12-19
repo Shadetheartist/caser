@@ -1,6 +1,6 @@
 # caser
 
-Caser is a command line utility that converts input strings based on a standard naming convention. 
+Caser is a command line utility that converts input strings based on a standard naming convention. It will split the input string on the delimiters " ", "_", ".", and "-". Except for when using file mode `-f/--file`, where the "." delimiter is not used.
 
 ## Usage
 ```
@@ -31,9 +31,38 @@ for any corresponding short options.
 
 `caser -i u "some input text"` outputs `SOME INPUT TEXT`
 
-You could use it to standardize your file names, using file mode, the '.' character remains in the string.
+### Standardizing File Names
 
-```for n in *; do mv "$n" `caser -sf -i l "$n"`; done```
+This is really the target use-case of this program. It was created in order to standardize file names easily. But as UNIX is all about 'doing one thing, and doing it well', `caser` itself does not rename files, however it can be very easily made to do so using the shell, as this program supports piping. 
+
+`echo "hello world" | caser -s` -> `hello_world`
+
+### Bash Functions
+
+Add the following function to your `~/.bashrc` file in order to quickly standardize file names using `caser`.
+
+```
+cmv(){
+	FORMATTED=$(caser -sf -i l "$1")
+	mv "$1" "$FORMATTED"
+}
+```
+
+example usage `cmv "some InSaNe FILE.namE"` -> `some_insane_file.name`
+
+###
+
+This function will standardize all files in the current working directory. Great for converting multiple files at once. For instance, converting a folder containing episodes of a tv series.
+
+```
+cmv_all(){
+	for n in *; do cmv "$n"; done
+}
+
+```
+
+
+
 
 ## Installation
 
