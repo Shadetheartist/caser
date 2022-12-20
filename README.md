@@ -2,6 +2,16 @@
 
 Caser is a command line utility that converts input strings based on a standard naming convention. It will split the input string on the delimiters " ", "_", ".", and "-". Except for when using file mode `-f/--file`, where the "." delimiter is not used.
 
+## Installation
+
+extract the .tar.gz file and run 
+
+```
+./configure
+make
+make install
+```
+
 ## Usage
 ```
 Usage: caser [OPTION...] [STRING]...
@@ -31,7 +41,7 @@ for any corresponding short options.
 
 `caser -i u "some input text"` outputs `SOME INPUT TEXT`
 
-### Standardizing File Names
+### Converting File Names
 
 This is really the target use-case of this program. It was created in order to standardize file names easily. But as UNIX is all about 'doing one thing, and doing it well', `caser` itself does not rename files, however it can be very easily made to do so using the shell, as this program supports piping. 
 
@@ -39,7 +49,7 @@ This is really the target use-case of this program. It was created in order to s
 
 ### Bash Functions
 
-Add the following function to your `~/.bashrc` file in order to quickly standardize file names using `caser`.
+Add the following `cmv` (**c**aser **mv**) function to your `~/.bashrc` file in order to quickly standardize file names using `caser`.
 
 ```
 cmv(){
@@ -50,26 +60,11 @@ cmv(){
 
 example usage `cmv "some InSaNe FILE.namE"` -> `some_insane_file.name`
 
-###
-
-This function will standardize all files in the current working directory. Great for converting multiple files at once. For instance, converting a folder containing episodes of a tv series.
+The `cmv_all` function will standardize all files in the current working directory. Great for converting multiple files at once. For instance, converting a folder containing episodes of a tv series.
 
 ```
 cmv_all(){
 	for n in *; do cmv "$n"; done
 }
 
-```
-
-
-
-
-## Installation
-
-extract the .tar.gz file and run 
-
-```
-./configure
-make
-make install
 ```
